@@ -16,7 +16,7 @@ config_V1.api_key['x-api-key'] = apiKey
 config_V2 = jcapiv2.Configuration()
 config_V2.api_key['x-api-key'] = apiKey
 
-#jcUserApiInstance = jcapiv1.SystemusersApi(jcapiv1.ApiClient(config_V1)) 
+# Getting the API instances ready
 jcSystemApiInstance = jcapiv1.SystemsApi(jcapiv1.ApiClient(config_V1))
 jcSysGroupApiInstance = jcapiv2.SystemGroupsApi(jcapiv2.ApiClient(config_V2))
 
