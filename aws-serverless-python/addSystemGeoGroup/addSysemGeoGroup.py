@@ -1,10 +1,12 @@
-import jcapiv1,jcapiv2,requests,json,datetime
+import jcapiv1,jcapiv2,requests,json,datetime,os
+
 from jcapiv1.rest import ApiException
 from jcapiv2.rest import ApiException
+
 from datetime import datetime
 from datetime import timedelta
 
-apiKey = "your-jc-apiKey"
+apiKey = os.environ['jc_api_key']
 
 backTrackDays = 1 # Recommended interval
 
