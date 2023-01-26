@@ -54,10 +54,12 @@ class Printer
     ## add install printer driver from link method
     InstallDriver(){
         try {
-           
-            Set-Location $this.drvlink
-            pnputil.exe -i -a *.inf
-            
+            $path = Get-ChildItem $this.drvlink | Where-Object {$_.Mode -eq "d-----"}
+            foreach ($p in $path.fullname){
+                
+                pnputil.exe -i -a ($p+"\*.inf")
+            }
+                       
         }
         catch [System.Exception] {
             Write-Output $_
@@ -98,17 +100,18 @@ function Get-PrinterDriverFromURL {
     }
     try {
         $zip = $downloadPath+$FileName
-        Invoke-WebRequest -Uri $url -OutFile $zip -ErrorAction Stop
+        Invoke-WebRequest -Uri $url -OutFile $zip -ErrorAction Stop -Verbose
 
         # Unzip the downloaded file
-        Expand-Archive -Path $zip -DestinationPath $downloadPath -Force
+        Expand-Archive -Path $zip -DestinationPath $downloadPath -Force -Verbose
         # remove the downloaded zip file after extracting
         
         if ($cleanup) {
             <# Action to perform if the condition is true #>
-            Remove-Item -Path $zip -Force
+            Remove-Item -Path $zip -Force -Verbose
         }
-       
+        
+       return $zip.Trim('.zip')
     }   
     catch {
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
@@ -117,3 +120,8 @@ function Get-PrinterDriverFromURL {
     }
    
 }
+
+
+#cmd template
+$r = Get-PrinterDriverFromURL -url $url -FileName "HP"
+$prn = [Printer]::new("Test","10.1.1.111","HP","SG",$r)
