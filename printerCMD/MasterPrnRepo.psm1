@@ -122,6 +122,3 @@ function Get-PrinterDriverFromURL {
 }
 
 
-#cmd template
-$r = Get-PrinterDriverFromURL -url $url -FileName "HP"
-$prn = [Printer]::new("Test","10.1.1.111","HP","SG",$r)
