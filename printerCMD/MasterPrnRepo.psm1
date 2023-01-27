@@ -56,7 +56,7 @@ class Printer
         try {
             $path = Get-ChildItem $this.drvlink | Where-Object {$_.Mode -eq "d-----"}
             foreach ($p in $path.fullname){
-                
+                Write-Output "Adding drivers from $p"
                 pnputil.exe -i -a ($p+"\*.inf")
             }
                        
@@ -75,9 +75,13 @@ class Printer
             "Canon" { $dn  = "Canon Generic Plus PCL6" }
             "Brother" { $dn  = "Brother Mono Universal Printer (PCL)" }
         }
-
+        Write-Output "Adding Drive to repo..."
         Add-PrinterDriver -Name $dn -erroraction silentlycontinue  -verbose # HP driver name 
+
+        Write-Output "Adding Printer Port $port for $($this.printername)..."
         Add-PrinterPort -name $this.PrinterName -PrinterHostAddress $this.IP -PortNumber $port -erroraction silentlycontinue -verbose 
+
+        Write-Output "Adding Printer $($this.printername)...hangon tight!"
         Add-Printer -DriverName $dn -name $this.PrinterName -PortName $this.PrinterName -erroraction silentlycontinue -verbose 
         
     }
@@ -100,6 +104,8 @@ function Get-PrinterDriverFromURL {
     }
     try {
         $zip = $downloadPath+$FileName
+        $unzipPath = $zip.Trim('.zip')
+
         Invoke-WebRequest -Uri $url -OutFile $zip -ErrorAction Stop -Verbose
 
         # Unzip the downloaded file
@@ -109,9 +115,10 @@ function Get-PrinterDriverFromURL {
         if ($cleanup) {
             <# Action to perform if the condition is true #>
             Remove-Item -Path $zip -Force -Verbose
+            Remove-Item -Path $unzipPath -Recurse -Force -Verbose
         }
         
-       return $zip.Trim('.zip')
+       return $unzipPath
     }   
     catch {
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
