@@ -96,7 +96,7 @@ function Get-PrinterDriverFromURL {
 
         [Parameter(Mandatory=$True)]
         [string]$FileName,
-        [bool]$cleanup = $True,
+        #[bool]$cleanup = $True,
         [string]$downloadPath = "c:\windows\temp\"
     )
     if ($FileName -notlike "*.zip"){
@@ -104,26 +104,16 @@ function Get-PrinterDriverFromURL {
     }
     try {
         $zip = $downloadPath+$FileName
-        $unzipPath = $zip.Trim('.zip')
-
         Invoke-WebRequest -Uri $url -OutFile $zip -ErrorAction Stop -Verbose
 
         # Unzip the downloaded file
         Expand-Archive -Path $zip -DestinationPath $downloadPath -Force -Verbose
-        # remove the downloaded zip file after extracting
-        
-        if ($cleanup) {
-            <# Action to perform if the condition is true #>
-            Remove-Item -Path $zip -Force -Verbose
-            Remove-Item -Path $unzipPath -Recurse -Force -Verbose
-        }
-        
-       return $unzipPath
+                  
+        return $zip
     }   
     catch {
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
-        # you can also write the error to a log file
-        # Add-Content -Path "C:\path\to\logfile.txt" -Value $($_.Exception.Message)
+       
     }
    
 }
