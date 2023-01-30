@@ -63,31 +63,38 @@ class Printer
             }
                        
         }
-        catch [System.Exception] {
-            Write-Output $_
-        } 
+        catch{
+            Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
+           
+        }
     }
     ## add install printer method
     InstallPrinter([int]$port = 9100){
-
-        $dn = ""
-        # Determine the driver name 
-        switch ($this.drivername) {
-            "HP" { $dn = "HP Universal Printing PCL 6" }
-            "Canon" { $dn  = "Canon Generic Plus PCL6" }
-            "Brother" { $dn  = "Brother Mono Universal Printer (PCL)" }
+        try{
+            $dn = ""
+            # Determine the driver name 
+            switch ($this.drivername) {
+                "HP" { $dn = "HP Universal Printing PCL 6" }
+                "Canon" { $dn  = "Canon Generic Plus PCL6" }
+                "Brother" { $dn  = "Brother Mono Universal Printer (PCL)" }
+            }
+            # doesnt work win11
+            # to add error handling
+            Write-Output "Adding Drive to repo..."
+            Add-PrinterDriver -Name $dn -erroraction Stop  -verbose # HP driver name 
+    
+            Write-Output "Adding Printer Port $port for $($this.printername)..."
+            Add-PrinterPort -name $this.PrinterName -PrinterHostAddress $this.IP -PortNumber $port -erroraction Stop -verbose 
+    
+            Write-Output "Adding Printer $($this.printername)...hangon tight!"
+            Add-Printer -DriverName $dn -name $this.PrinterName -PortName $this.PrinterName -erroraction Stop -verbose 
+            
         }
-        # doesnt work win11
-        # to add error handling
-        Write-Output "Adding Drive to repo..."
-        Add-PrinterDriver -Name $dn -erroraction silentlycontinue  -verbose # HP driver name 
-
-        Write-Output "Adding Printer Port $port for $($this.printername)..."
-        Add-PrinterPort -name $this.PrinterName -PrinterHostAddress $this.IP -PortNumber $port -erroraction silentlycontinue -verbose 
-
-        Write-Output "Adding Printer $($this.printername)...hangon tight!"
-        Add-Printer -DriverName $dn -name $this.PrinterName -PortName $this.PrinterName -erroraction silentlycontinue -verbose 
-        
+        catch{
+            Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
+           
+        }
+       
     }
 
 }
