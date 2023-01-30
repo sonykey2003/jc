@@ -15,7 +15,7 @@ class Printer
     [string]$IP
 
     # Validating the driver name
-    [ValidateSet("HP", "Cannon", "Brother")]
+    [ValidateSet("HP", "Canon", "Brother")]
     [string]$drivername
 
     [string]$locale
@@ -52,14 +52,19 @@ class Printer
 
     # Methods
     ## add install printer driver from link method
-    InstallDriver(){
+    InstallDriver([string]$dn){
         try {
             $path = Get-ChildItem $this.drvlink | Where-Object {$_.Mode -eq "d-----"}
             foreach ($p in $path.fullname){
 
-                # doesnt work win11
-                Write-Output "Adding drivers from $p"
+                # installing drivers from inf
+                Write-Host "Adding drivers from $p"
                 pnputil.exe -i -a ($p+"\*.inf")
+
+               
+                Write-Host "Adding Drive to repo..."
+                Add-PrinterDriver -Name $dn -erroraction SilentlyContinue  -verbose # HP driver name 
+    
             }
                        
         }
@@ -69,24 +74,21 @@ class Printer
         }
     }
     ## add install printer method
-    InstallPrinter([int]$port = 9100){
+    InstallPrinter([int]$port,[string]$dn){
+        $port = 9100
         try{
-            $dn = ""
-            # Determine the driver name 
-            switch ($this.drivername) {
-                "HP" { $dn = "HP Universal Printing PCL 6" }
-                "Canon" { $dn  = "Canon Generic Plus PCL6" }
-                "Brother" { $dn  = "Brother Mono Universal Printer (PCL)" }
+            # Check if the printerport already added
+            $existPort = Get-PrinterPort -name $this.PrinterName -erroraction SilentlyContinue
+            if ($null -eq $existPort){
+                Write-Host "Adding Printer Port $port for $($this.printername)..."
+                Add-PrinterPort -name $this.PrinterName -PrinterHostAddress $this.IP -PortNumber $port -erroraction Stop -verbose     
             }
-            # doesnt work win11
-            # to add error handling
-            Write-Output "Adding Drive to repo..."
-            Add-PrinterDriver -Name $dn -erroraction Stop  -verbose # HP driver name 
-    
-            Write-Output "Adding Printer Port $port for $($this.printername)..."
-            Add-PrinterPort -name $this.PrinterName -PrinterHostAddress $this.IP -PortNumber $port -erroraction Stop -verbose 
-    
-            Write-Output "Adding Printer $($this.printername)...hangon tight!"
+            else {
+                Write-Host "Port:$port exists with name: $($this.printername)..."
+            
+            }
+           
+            Write-Host "Adding Printer $($this.printername)...hang on tight!"
             Add-Printer -DriverName $dn -name $this.PrinterName -PortName $this.PrinterName -erroraction Stop -verbose 
             
         }

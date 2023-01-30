@@ -1,28 +1,68 @@
-#cmd template
-using module "c:\windows\temp\MasterPrnRepo.psm1" # Change the path to c:\windows\temp\ after uploading within JC cmd
+  # Install Printer JC CMD template
+# you get the latest module at:
+# https://raw.githubusercontent.com/sonykey2003/jc/main/printerCMD/MasterPrnRepo.psm1
 
-# Run the lines before using the module, JC cmd wont have this issue
-#$moduleUrl = "https://raw.githubusercontent.com/sonykey2003/jc/main/printerCMD/MasterPrnRepo.psm1"
-#$script = [scriptblock]::Create((invoke-WebRequest -Uri $moduleUrl -UseBasicParsing).content)
-#$script | Out-File MasterPrnRepo.psm1
-#New-Module -Name prnt.main -ScriptBlock $script | Out-Null
+using module "c:\windows\temp\MasterPrnRepo.psm1" # Change the path if you have a customised location storing the uploaded file
 
+# Creating printer objects
 $port = 9100
-$HPRrns = @()
+$Prns = @()
+
+## HP Printer
 $HPurl = "https://raw.githubusercontent.com/sonykey2003/jc/main/printerCMD/universalDrivers/hp.zip"
-$r = Get-PrinterDriverFromURL -url $HPurl -FileName "HP"
-$HPRrns += [Printer]::new("Test01","10.1.1.111","HP","SG",$r)
-$HPRrns += [Printer]::new("Test02","10.1.1.112","HP","SG",$r)
+$ReDriverPathHP = Get-PrinterDriverFromURL -url $HPurl -FileName "HP"
+$HP_Prn01 = "HP_Test01" #Name your printer as you wish
+$Prns += [Printer]::new($HP_Prn01,"10.1.1.111","HP","SG",$ReDriverPathHP)
 
 
-foreach ($p in $HPRrns){
-    $p.InstallDriver()
-    sleep 20
-    $p.InstallPrinter($port)
+## Cannon Printer
+$CNurl = "https://raw.githubusercontent.com/sonykey2003/jc/main/printerCMD/universalDrivers/canon.zip"
+$ReDriverPathCN = Get-PrinterDriverFromURL -url $CNurl -FileName "Canon"
+$CN_Prn01 = "CN_Test01" #Name your printer as you wish
+$Prns += [Printer]::new($CN_Prn01,"10.1.1.112","canon","SG",$ReDriverPathCN)
+
+## Brother Printer
+$BRurl = "https://raw.githubusercontent.com/sonykey2003/jc/main/printerCMD/universalDrivers/brother.zip"
+$ReDriverPathBR = Get-PrinterDriverFromURL -url $BRurl -FileName "Brother"
+$BR_Prn01 = "BR_Test01" #Name your printer as you wish
+$Prns += [Printer]::new($BR_Prn01,"10.1.1.112","brother","SG",$ReDriverPathBR)
+
+
+# Creating Recycle Bin
+$RB = @()
+$RB += $ReDriverPathHP
+$RB += $ReDriverPathCN
+$RB += $ReDriverPathBR
+
+$RB += "c:\windows\temp\MasterPrnRepo.psm1"
+$RB += $ReDriverPathHP + '.zip'
+$RB += $ReDriverPathCN + '.zip'
+$RB += $ReDriverPathBR + '.zip'
+
+# Install the printers
+foreach ($p in $Prns){
+    # Determine the driver name 
+    $dn = ""               
+    switch ($p.drivername) {
+        "HP" { $dn = "HP Universal Printing PCL 6" }
+        "Canon" { $dn  = "Canon Generic Plus PCL6" }
+        "Brother" { $dn  = "Brother Mono Universal Printer (PCL)" }
+    }
+    $driExist =  Get-PrinterDriver | ? {$_.name -like "*$dn*"}
+    if ($null -eq $driExist){
+        $p.InstallDriver($dn)
+        sleep 20   
+    
+    }      
+    $p.InstallPrinter($port,$dn)
 }
+ 
+
 
 #Cleanning up 
-$unzipPath = $r + '.zip'
+foreach ($item in $RB){
 
-Remove-Item -Path $r -Force -Verbose
-Remove-Item -Path $unzipPath -Recurse -Force -Verbose
+    Remove-Item -Path $item -Recurse -Force -Verbose
+}
+ 
+ 
