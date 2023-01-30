@@ -56,6 +56,8 @@ class Printer
         try {
             $path = Get-ChildItem $this.drvlink | Where-Object {$_.Mode -eq "d-----"}
             foreach ($p in $path.fullname){
+
+                # doesnt work win11
                 Write-Output "Adding drivers from $p"
                 pnputil.exe -i -a ($p+"\*.inf")
             }
@@ -75,6 +77,8 @@ class Printer
             "Canon" { $dn  = "Canon Generic Plus PCL6" }
             "Brother" { $dn  = "Brother Mono Universal Printer (PCL)" }
         }
+        # doesnt work win11
+        # to add error handling
         Write-Output "Adding Drive to repo..."
         Add-PrinterDriver -Name $dn -erroraction silentlycontinue  -verbose # HP driver name 
 
@@ -103,13 +107,19 @@ function Get-PrinterDriverFromURL {
         $FileName = $FileName + ".zip"
     }
     try {
+        # Driver zip path
         $zip = $downloadPath+$FileName
+
+        # Unzipping driver path
+        $unzipPath = $zip.Trim('.zip')
+
+        # Downloading driver zip from url
         Invoke-WebRequest -Uri $url -OutFile $zip -ErrorAction Stop -Verbose
 
         # Unzip the downloaded file
         Expand-Archive -Path $zip -DestinationPath $downloadPath -Force -Verbose
                   
-        return $zip
+        return $unzipPath
     }   
     catch {
         Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red

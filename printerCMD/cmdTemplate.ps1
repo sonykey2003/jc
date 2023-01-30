@@ -22,7 +22,7 @@ foreach ($p in $HPRrns){
 }
 
 #Cleanning up 
-$unzipPath = $r.Trim('.zip')
+$unzipPath = $r + '.zip'
 
 Remove-Item -Path $r -Force -Verbose
 Remove-Item -Path $unzipPath -Recurse -Force -Verbose
