@@ -1,5 +1,5 @@
 ###################################################################
-#  Version:        1.1
+#  Version:        1.2
 #
 #
 #  Author:         Shawn Song
@@ -109,7 +109,6 @@ function Get-PrinterDriverFromURL {
 
         [Parameter(Mandatory=$True)]
         [string]$FileName,
-        #[bool]$cleanup = $True,
         [string]$downloadPath = "c:\windows\temp\"
     )
     if ($FileName -notlike "*.zip"){
