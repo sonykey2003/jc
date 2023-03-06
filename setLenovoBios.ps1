@@ -19,6 +19,4 @@
  Write-Host "Saving the bios setting..."
  $SaveSettings = Get-WmiObject -Namespace root\wmi -Class Lenovo_SaveBiosSettings
  $SaveSettings.SaveBiosSettings()
-  
-   
  
