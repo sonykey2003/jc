@@ -15,7 +15,8 @@
 4. Create a new `scenario` on Make.com -> "import Blueprint" -> navigate to the Json file you just downloaded -> save. 
 5. At the first "Google Sheets" module, set it up by link your google drive account, and choose the csv file.
 6. Go to `createUsersAttr` JSON module -> add (data structure) -> Generate -> use the sample data like below, click "generate".
-7. Note: Highly recommended to generate a random password for the new users and rotate it regularly. 
+
+    **Note**: Highly recommended to generate a random password for the new users and rotate it regularly. 
 ```JSON
 {
     "company": "string",
@@ -28,13 +29,14 @@
     "jobTitle": "string",
     "lastname": "string",
     "location": "string",
-    "password": "string"
+    "password": "string",
+    "username": "username"
 }
 
 ```
 
-8. Next, go to `createUsers` HTTP module -> add Credentials -> Name it, and input your JC API key in "Key" section. -> "API Key Placement" - In the header -> "API Key parameter name" - "X-API-Key" -> create.
-9. Then, go to `bulkJobData` JSON module -> add (data structure) -> Generate -> use the sample data like below, click "generate".
+7. Next, go to `createUsers` HTTP module -> add Credentials -> Name it, and input your JC API key in "Key" section. -> "API Key Placement" - In the header -> "API Key parameter name" - "X-API-Key" -> create.
+8. Then, go to `bulkJobData` JSON module -> add (data structure) -> Generate -> use the sample data like below, click "generate".
 ```JSON
 
 {
@@ -43,6 +45,6 @@
     "start_date": "2000-01-01T00:00:00.000Z"
 }
 ```
-10. Lastly, go to `scheduleOnboarding` HTTP module -> choose the credential you created in step 8. 
+9. Lastly, go to `scheduleOnboarding` HTTP module -> choose the credential you created in step 8. 
 
 Done! Run the scenario and see how it goes!
