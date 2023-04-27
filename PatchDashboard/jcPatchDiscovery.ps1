@@ -10,8 +10,9 @@ $windowstemp = [System.Environment]::GetEnvironmentVariable('TEMP', 'Machine')
 $newjsonoutputdir = $windowstemp + '\' + $env:COMPUTERNAME + '.json'
 $workingdir = $windowstemp + '\patch-discovery'
 $discoverycsvlocation = $workingdir + '\jcPatchDiscovery.csv'
-$na = 'n.a.'
-$now = get-date -Format "M/dd/yyyy HH:MM:ss tt" 
+$dateTimeFormat = "M/dd/yyyy HH:MM:ss tt" 
+$utc = (get-date).ToUniversalTime()
+$now = get-date $utc -Format $dateTimeFormat 
 
 
 # Turnnning off the telemtry
@@ -39,8 +40,8 @@ foreach ($module in $pswhModules){
 Set-GitHubAuthentication -Credential $cred # turnnning off the telemtry
 
 # Getting the missing patches
-$missingPatches =  Get-WindowsUpdate
-$missingPatchesOut = @()
+$missingPatches =  Get-WindowsUpdate 
+$patchReportOut = @()
 <# 
 Full definition - https://gist.github.com/cfebs/c9d83c2480a716f6d8571fb6cc80fd59
 Updates: General updates that may include new features, improvements, and non-critical bug fixes.
@@ -63,7 +64,7 @@ alternatively use this parameter
 if ($null -ne $missingPatches){
     
     foreach ($patch in $missingPatches){
-        $missingPatchesOut += New-Object -TypeName PSObject -Property @{
+        $patchReportOut += New-Object -TypeName PSObject -Property @{
             ComputerName = $patch.ComputerName
             Size = $patch.Size
             Category = ($patch.Categories[0] | select name).name
@@ -73,24 +74,34 @@ if ($null -ne $missingPatches){
             IsPresent = $patch.IsPresent
             RebootRequired = $patch.RebootRequired
             checkInTimeStamp = $now
+            InstalledOn = [datetime]::MinValue 
         }
     }
 }
-else {
-    $missingPatchesOut = New-Object -TypeName PSObject -Property @{
+
+# Getting the installed patches, if none, there must be missing patches
+$installedPatches =  get-HotFix
+
+if ($null -ne $installedPatches){
+    
+    foreach ($hotfix in $installedPatches){
+        $patchReportOut += New-Object -TypeName PSObject -Property @{
             ComputerName = $env:COMPUTERNAME
-            Size = $na
-            Category = $na
-            KB = $na
-            Title = $na
-            WhenAvaliable = $na
-            IsPresent = $na
-            RebootRequired = $na
+            Size = [string]''
+            Category = $hotfix.Description
+            KB = $hotfix.HotFixID
+            Title = [string]''
+            WhenAvaliable = [datetime]::MinValue   
+            IsPresent = $true
+            RebootRequired = $hotfix.status
             checkInTimeStamp = $now
-        
+            InstalledOn = Get-date $hotfix.InstalledOn -Format $dateTimeFormat
         }
+    }
 }
-$missingPatchesOut | ConvertTo-Json -Compress |out-file $newjsonoutputdir #-Encoding unicode
+
+
+$patchReportOut | ConvertTo-Json -Compress |out-file $newjsonoutputdir #-Encoding unicode
 
 # Upload latest JSON to repo
 $missingPatchesJSON = (get-content -Path $newjsonoutputdir)
