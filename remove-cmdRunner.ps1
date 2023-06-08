@@ -1,11 +1,12 @@
+# Use your JC api key to connect-jconline
+
 # The cmdrunner you wanted to pinpoint and remove from the cmd
-$cmdrunnerID = 'cmdrunner_admin_id' #get this on admin console UI only - i.e. :
+$cmdrunnerID = '64815632b3315f242f315e86' #get this on admin console UI only - i.e. :
 #click the cmd runner admin at adminstrator page https://console.jumpcloud.com/#/settings/administrators/details/<admin_id>
-$replacedCmdRunnerID = "" #replace by another cmdrunner admin's id if required, by default will remove ALL cmdrunners for the cmd
+$replacedCmdRunnerID = "6306e843c1473ed4ae36de61" #replace by another cmdrunner admin's id if required, by default will remove ALL cmdrunners for the cmd
 
 $cmds = Get-JCCommand 
 foreach($c in $cmds){
-    #$cmdrunners = (Get-JCCommand -ByID $c._id | select commandrunners).commandrunners
     $cmdrunners = (Get-JCCommand -ByID $c._id| select commandrunners).commandrunners
     if ("" -ne $cmdrunners){
         foreach ($cr in $cmdrunners) {
