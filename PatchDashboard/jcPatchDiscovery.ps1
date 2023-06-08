@@ -1,7 +1,7 @@
 # Github cred
-$GHUsername = ''
-$GHToken = '' # https://github.com/settings/tokens needs token to write/create repo
-$GHRepoName = '' # create a private repo first on Github and paste the name here 
+$GHUsername = 'sonykey2003'
+$GHToken = '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' # https://github.com/settings/tokens needs token to write/create repo
+$GHRepoName = 'JC-WinPatch-Discovery-private' # create a private repo first on Github and paste the name here 
 $password = ConvertTo-SecureString "$GHToken" -AsPlainText -Force
 $Cred = New-Object System.Management.Automation.PSCredential ($GHUsername, $password)
 
