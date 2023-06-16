@@ -58,5 +58,7 @@ foreach ($app in $AppsResponse){
         $updateResponse =  Invoke-RestMethod -Uri $appUpdateUrl -Method Put -Headers $headers -Body $body 
         Write-Host "$($updateResponse.displayname) $($updateResponse.id) has set to $($updateResponse.settings.autoUpdate)" -ForegroundColor Green
 
+        # Optional to retry the install basically a way to enforce the app updates for VPPs - suggest to do on VPP only
+
     }
 }
