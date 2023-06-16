@@ -5,7 +5,7 @@ $JCAPIKEY = ""
 $JCorgID = ""
 
 # API auth header
-$headers = @{
+$headers = @{   
     "x-org-id" = $JCorgID #your org id
     "x-api-key" = $JCAPIKEY #your admin api key
     "content-type" = "application/json"
@@ -68,10 +68,6 @@ function retryInstallation {
     }
 
     foreach ($App in $softwareAppID){
-
-        #debugging line
-        #Write-Host "dealling with $app"
-
         if ($all){
             $AppID= $app.id
             $AppDN = $app.displayName
@@ -111,3 +107,9 @@ function retryInstallation {
    
  }
  
+# Example use cases 
+# Use this to trigger a retry installation to all VPPs in your ORG"
+retryInstallation -all:$true
+
+# This will trigger a retry installation on all systems bind to a specific app
+retryInstallation -softwareAppID "softwareApp_ID" # You can get the ID from get-jcsdkSoftwareApp 
