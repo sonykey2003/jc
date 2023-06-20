@@ -2,8 +2,6 @@
 # DO NOT use this script - it won't work!!!
 ##########################################################################################
 
-
-# Required module: Jumpcloud PWSH
 # Connecting to JC online
 $JCAPIKEY = ""
 $JCorgID = ""
@@ -17,9 +15,6 @@ $headers = @{
 
 
 $baseUrl = "https://console.jumpcloud.com/api/v2/softwareapps/"
-
-
-
 
 # You can enforce the auto update for android & windows apps too
 #$appPkgMgr = "CHOCOLATEY"  # Windows apps
