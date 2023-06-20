@@ -1,3 +1,8 @@
+##########################################################################################
+# DO NOT use this script - it won't work!!!
+##########################################################################################
+
+
 # Required module: Jumpcloud PWSH
 # Connecting to JC online
 $JCAPIKEY = ""
@@ -11,33 +16,43 @@ $headers = @{
 }
 
 
-$AppUrl = "https://console.jumpcloud.com/api/v2/softwareapps"
+$baseUrl = "https://console.jumpcloud.com/api/v2/softwareapps/"
 
-# Pagination, in case the there are more than 100 apps in total
-$limit = 100
-$skip = 0
-$hasMore = $true
-$AppsResponse = @()
-while ($hasMore) {
-    $uri = $AppUrl+"?limit=$limit&skip=$skip"
 
-    # Call the API
-    $AppsResponse += Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
 
-    # Check if there are more records to fetch
-    if ($AppsResponse.Count -lt $limit) {
-        $hasMore = $false
-    } else {
-        $skip += $limit
-    }
-}
+
+# You can enforce the auto update for android & windows apps too
+#$appPkgMgr = "CHOCOLATEY"  # Windows apps
+#$appPkgMgr = "GOOGLE_ANDROID" 
+$appPkgMgr = "APPLE_VPP"
+
+function getSoftwareApp {
+    # Pagination, in case the there are more than 100 apps in total
+     $limit = 100
+     $skip = 0
+     $hasMore = $true
+     $AppsResponse = @()
+     while ($hasMore) {
+         $uri = $AppUrl+"?limit=$limit&skip=$skip"
+ 
+         # Call the API
+         $AppsResponse += Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
+ 
+         # Check if there are more records to fetch
+         if ($AppsResponse.Count -lt $limit) {
+             $hasMore = $false
+         } else {
+             $skip += $limit
+         }
+     }
+ 
+     return $AppsResponse | where {$_.settings.packageManager -eq $appPkgMgr} 
+ }
+
 
 # Set the VPP to auto update
 foreach ($app in $AppsResponse){
-    # You enforce the auto update for android & windows apps too
-    #$appPkgMgr = "CHOCOLATEY"  # Windows apps
-    #$appPkgMgr = "GOOGLE_ANDROID" 
-    $appPkgMgr = "APPLE_VPP"
+  
     
     $pkgMgr = $app.settings.packageManager 
     $autoUpdate = $app.settings.autoUpdate
