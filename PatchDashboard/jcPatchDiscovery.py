@@ -3,7 +3,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
+from packaging import version
 
 # Release Info URLs and API Key
 win11ReInfoUrl = "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information"
@@ -78,6 +78,7 @@ sysPatchInfoDF =pd.DataFrame(
         'Hostname':[],
         'DisplayName':[],
         'OS':[],
+        'OS Family':[],
         'OS Patch Level':[],
         'UpToDate?':[],
         'Lastest Release':[],
@@ -96,22 +97,29 @@ for system in JCSystems:
     if system['osFamily'] == 'darwin':
         osPatchLv = systemVerDetails['revision']
         lastestRe = MacOS_All.loc[systemVerDetails['osName'] + ' '+systemVerDetails['major'] == MacOS_All['Version']].values[0][2]
-        outdated = osPatchLv not in lastestRe
+        lastestRe = lastestRe.split('(')[1].rstrip(')') # Taking out the revision number for comparision
+        outdated = osPatchLv != lastestRe
+
     # Linux - For Ubuntu ONLY
     elif system['os'] == 'Ubuntu':
-        osPatchLv = str(systemVerDetails['major']) + '.' + str(systemVerDetails['minor']) + '.' + str(systemVerDetails['patch'])
+        osPatchLv = str(systemVerDetails['major']) + '.' + str(systemVerDetails['minor']) + '.' + str(systemVerDetails['patchNumber'])
+        osPatchLv = version.parse(osPatchLv) # Coverting to Version object for comparision
         lastestRe = Ubuntu_All.loc[systemVerDetails['releaseName'] == Ubuntu_All['Code name']].values[0][0]
-        outdated = osPatchLv not in lastestRe
+        lastestRe = version.parse(str(lastestRe.split()[1]))  # Coverting to Version object for comparision
+        outdated = osPatchLv > lastestRe
     # Windows
     elif system['osFamily'] == 'windows':
         osPatchLv = systemVerDetails['patch'] + '.' + systemVerDetails['revision']
-        lastestRe = (Win11_CuVer.loc[Win11_CuVer['Version'] == systemVerDetails['releaseName']])['Latest build'].values[0]
-        outdated = float(osPatchLv) != lastestRe
+        osPatchLv = version.parse(osPatchLv)
+        lastestRe = str((Win11_CuVer.loc[Win11_CuVer['Version'] == systemVerDetails['releaseName']])['Latest build'].values[0])
+        lastestRe = version.parse(lastestRe)
+        outdated = lastestRe > osPatchLv
 
     new_data = [
         system['hostname'], 
         system['displayName'], 
         os,
+        system['os'],
         osPatchLv,
         outdated,
         lastestRe,
