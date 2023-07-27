@@ -4,6 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from packaging import version
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Release Info URLs and API Key
 win11ReInfoUrl = "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information"
@@ -89,7 +91,7 @@ sysPatchInfoDF =pd.DataFrame(
 # Matching the data with Version
 for system in JCSystems:
     # Build a new DF for the systems and patching level
-    outdated = True
+    UpToDate = False
     os = system['os'] +' '+system['version']
     systemVerDetails = system['osVersionDetail']
     # Compare the patch level with the latest for each OS
@@ -98,22 +100,24 @@ for system in JCSystems:
         osPatchLv = systemVerDetails['revision']
         lastestRe = MacOS_All.loc[systemVerDetails['osName'] + ' '+systemVerDetails['major'] == MacOS_All['Version']].values[0][2]
         lastestRe = lastestRe.split('(')[1].rstrip(')') # Taking out the revision number for comparision
-        outdated = osPatchLv != lastestRe
+        UpToDate = osPatchLv == lastestRe
 
     # Linux - For Ubuntu ONLY
     elif system['os'] == 'Ubuntu':
-        osPatchLv = str(systemVerDetails['major']) + '.' + str(systemVerDetails['minor']) + '.' + str(systemVerDetails['patchNumber'])
+        if systemVerDetails['patch'] == '':
+            patchNumber = '0'
+        osPatchLv = str(systemVerDetails['major']) + '.' + str(systemVerDetails['minor']) + '.' + patchNumber
         osPatchLv = version.parse(osPatchLv) # Coverting to Version object for comparision
         lastestRe = Ubuntu_All.loc[systemVerDetails['releaseName'] == Ubuntu_All['Code name']].values[0][0]
         lastestRe = version.parse(str(lastestRe.split()[1]))  # Coverting to Version object for comparision
-        outdated = osPatchLv > lastestRe
+        UpToDate = osPatchLv == lastestRe
     # Windows
     elif system['osFamily'] == 'windows':
         osPatchLv = systemVerDetails['patch'] + '.' + systemVerDetails['revision']
         osPatchLv = version.parse(osPatchLv)
         lastestRe = str((Win11_CuVer.loc[Win11_CuVer['Version'] == systemVerDetails['releaseName']])['Latest build'].values[0])
         lastestRe = version.parse(lastestRe)
-        outdated = lastestRe > osPatchLv
+        UpToDate = lastestRe == osPatchLv
 
     new_data = [
         system['hostname'], 
@@ -121,7 +125,7 @@ for system in JCSystems:
         os,
         system['os'],
         osPatchLv,
-        outdated,
+        UpToDate,
         lastestRe,
         system['id']
     ]
@@ -129,3 +133,32 @@ for system in JCSystems:
     sysPatchInfoDF = pd.concat([sysPatchInfoDF, new_series.to_frame().T], ignore_index=True)
 
 # Next, do the plotting
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the CSV file into a DataFrame
+sns.set(style="whitegrid")
+
+# Calculate overall percentage of systems that are updated vs outdated
+total_systems = sysPatchInfoDF.shape[0]
+updated_systems = sysPatchInfoDF[sysPatchInfoDF['UpToDate?'] == True].shape[0]
+outdated_systems = sysPatchInfoDF[sysPatchInfoDF['UpToDate?'] == False].shape[0]
+
+# Calculate percentages
+updated_percentage = (updated_systems / total_systems) * 100
+outdated_percentage = (outdated_systems / total_systems) * 100
+
+# Count Plot for OS Family and UpToDate with overall percentages
+plt.figure(figsize=(10, 6))
+sns.countplot(x="OS Family", hue="UpToDate?", data=sysPatchInfoDF,palette=['red', 'green'])
+plt.title('Count of Systems Updated/Outdated by OS Family')
+plt.ylabel('Count')
+plt.xlabel('OS Family')
+
+# Modify legend to include the percentage information
+plt.legend(title='UpToDate?', title_fontsize='13', labels=[f'No ({outdated_percentage:.2f}%)', f'Yes ({updated_percentage:.2f}%)'])
+
+plt.show()
+
+# and then use the df to add these outdated devices to a policy to enforce patching
