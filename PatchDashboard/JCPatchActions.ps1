@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 # Script: JCPatchActions.ps1
-# Version: 1.0.0
+# Version: 1.0.1
 # Author: Shawn Song
 # Requirement to run this: 
 #  - Powershell 7+
@@ -12,14 +12,14 @@
 ## Learn more about the admin roles https://jumpcloud.com/support/admin-portal-roles
 
 # Getting the key elements together
-$apiKey = ''
+$apiKey = '' # Your JC manager admin API key
 Connect-JCOnline -JumpCloudApiKey $apiKey
-$outdatedSystems = Import-csv "/Users/ssong/repo/jc/PatchDashboard/outdatedSystems.csv" # The CSV exported from Patch Dashboard step 2
+$outdatedSystems = Import-csv "/the-path-to/outdatedSystems-2023-08-14.csv" # The CSV exported from Patch Dashboard step 2
 
 # Create or provide the most agressive patch policy IDs for respective OSes
-$winPolicyID = '623d0317d7704a00018da124'
-$macPolicyID = '623d0316b544065ab3f82f9b'
-$linuxPolicyID = '631fc7574452530001b79ffe'
+$winPolicyID = 'winPolicyID'
+$macPolicyID = 'macPolicyID'
+$linuxPolicyID = 'linuxPolicyID'
 
 $enforcePatchPolicies = @(
     [PSCustomObject]@{
@@ -80,7 +80,7 @@ function addAssocToGroup {
         foreach ($policy in $arrayOfStuff){
             try {
                 Add-JCAssociation -Type policy -Id $policy.id -TargetType system_group -TargetId $groupID -Force -ErrorAction Continue
-                Write-Host "Adding $($policy.name) to $($newGroup.Name)..."
+                Write-Host "Adding $($policy.name):$($policy.ID) to $($newGroup.Name)..."
             }
             catch {
                 Write-Host "Error: $($_.Exception.Message)" -ForegroundColor Red
@@ -90,11 +90,9 @@ function addAssocToGroup {
    
 }
 
+# Binding the outdated systems to the enforcement patch policies
 $groupID = $newGroup.id
 
 addAssocToGroup -type systems -arrayOfStuff $outdatedSystems -groupID $groupID 
 addAssocToGroup -type policies -arrayOfStuff $enforcePatchPolicies -groupID $groupID 
 
-
-# Option 3 - enforcing the update via cmd
-# mac - https://iboysoft.com/news/update-mac-from-terminal.html
