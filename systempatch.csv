@@ -1,0 +1,14 @@
+,Hostname,DisplayName,OS,OS Patch Level,UpToDate?,Lastest Release,systemID
+0,Shawn-Labs-MacBook-Pro.local,Shawn-Labs-MacBook-Pro.local,Mac OS X 13.5,22G74,False,13.5 (22G74),636b4f95277b354fa30c0a20
+1,ubuntu-linux-22-04-desktop,ub01-arm,Ubuntu 22.04 LTS (Jammy Jellyfish),22.04.,False,Ubuntu 22.04.2 LTS,63a010ab1753722c98cca988
+2,shawn-ubuntu-x86,shawn-ubuntu-x86,Ubuntu 22.04.2 LTS (Jammy Jellyfish),22.04.2,False,Ubuntu 22.04.2 LTS,64007df78071c67613e397ac
+3,test-PC,test-PC,Windows 11 Pro,22621.1992,False,22621.1992,6424d0c1f0d5fe1ca05eda1a
+4,m1Mac01.local,m1Mac01.local,Mac OS X 13.4.1,22F82,True,13.5 (22G74),642a4064b3de9735e6038523
+5,armWin11-01,armWin11-01,Windows 11 Enterprise,22621.1702,True,22621.1992,642a88359542ff3361e0edb7
+6,armWin11-02,armWin11-02,Windows 11 Pro,22621.1555,True,22621.1992,642a923d467b2efc1cb40b20
+7,x86win11-02,x86win11-02,Windows 11 Pro,22621.1555,True,22621.1992,64376501083ad4b473db5add
+8,C01-win11,C01-win11,Windows 11 Enterprise Evaluation,22000.2057,True,22000.2245,6437cbbb672002ce1885f220
+9,ub01,ub01-x86,Ubuntu 22.04,22.04.2,False,Ubuntu 22.04.2 LTS,6438dee8413d432b960a3daf
+10,Elsies-MBP.local,Elsies-MBP.local,Mac OS X 13.5,22G74,False,13.5 (22G74),6479676eb0de8c4a5f8c8a80
+11,shawnMBA.local,shawnHome-MBA.local,Mac OS X 11.7.9,20G1426,False,11.7.9 (20G1426),647989bbe179ee9df4dc7db4
+12,C02,C02,Windows 11 Enterprise Evaluation,22000.2124,True,22000.2245,64b8c44dceabe20f354ec6a4
