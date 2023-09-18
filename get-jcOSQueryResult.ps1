@@ -6,13 +6,16 @@
 # Reference: 
 #  -  https://github.com/TheJumpCloud/jcapi-powershell/blob/master/SDKs/PowerShell/JumpCloud.SDK.V1/examples/Search-JcSdkCommandResult.md
 # 
-# Notes: Always name your cmd with a proper naming covention
+# Notes: Always name your cmd with a proper naming covention.
+# Requirements:
+# - The latest JumpCloud PowerShell Module.
+# - PowerShell 7 and above versions. 
 # -----------------------------------------------------------------------------
 
 # Input the cmd name you use for querying the Edge/Firefox add-ons
 $cmdName = "Edge Extensions - JCQSQuery" # Microsft Edge Browser 
 #$cmdName = "FF Add-ons - JCQSQuery" # Firefox Browser
-
+Connect-JCOnline -JumpCloudApiKey "your-read-only-api-key" # Read-only permission is all you need!
 
 #################################### Don't Change the code below this line ####################################
 function get-jcOSQueryResults {
