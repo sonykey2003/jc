@@ -34,7 +34,7 @@ function getSoftwareApp {
     $hasMore = $true
     $AppsResponse = @()
     while ($hasMore) {
-        $uri = $AppUrl+"?limit=$limit&skip=$skip"
+        $uri = $baseUrl+"?limit=$limit&skip=$skip"
 
         # Call the API
         $AppsResponse += Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
