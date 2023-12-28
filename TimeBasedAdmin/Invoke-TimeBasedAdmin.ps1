@@ -1,8 +1,17 @@
+
+# ----------------------------------------------------------------------------------------------------------
+# Script: Invoke-TimeBasedAdmin.ps1
+# Version: 1.0.0
+# Author: Shawn Song
+# Reference: https://docs.jumpcloud.com/api/1.0/index.html
+# Notes: Please run this script on an adminstrative device with the latest version of PowerShell installed.
+# ----------------------------------------------------------------------------------------------------------
+
 # Connect to your JC Tenant - Manager role is good enough!
-#Connect-JCOnline -JumpCloudApiKey $env:JCRW #strongly suggest storing the API key in the system env variable,
+Connect-JCOnline -JumpCloudApiKey $env:JCRW #strongly suggest storing the API key in the system env variable,
 ## i.e. https://medium.com/@sonykey2003/protect-your-secrets-in-environment-variables-a07eff7699f0
 
-# Get JC user   
+# Get JC user - please do it one at a time
 $username = Read-Host  "What is the user name you want to promot to admin"
 [Int32]$time = Read-Host "How long you want to grant the admin privilege, in mins? (input the integer - i.e. 15,20,30)"
 $jcuser = Get-JCUser -username $username
@@ -46,11 +55,6 @@ $startTime = Get-Date
 $endTime = $startTime.AddMinutes($time)  # Adjust the time as needed
 
 
-# create cmd trigger for toast msg on Win
-# create cmd trigger for scheduling and pass in the params & JC api key for revoking
-
-
-
 # Start a background job to keep track of the time
 Write-Output 'Kicking off a background job for $username...Check the status by using "receive-Job -id $job.id -keep" '
 $job = Start-Job -Name ($username+'Temp Admin '+$time+' mins') -ScriptBlock {
@@ -81,7 +85,10 @@ $job = Start-Job -Name ($username+'Temp Admin '+$time+' mins') -ScriptBlock {
     # Binding the cmd trigger to the designated system
     Set-JcSdkCommandAssociation -CommandId $cmd._id -Op "add" -Type 'system' -Id $targetSystem._id
     
+    # Giving user a heads up when the privillege been granted.
+    Trigger-JCCmd -TriggerName $triggerName -remainingTime $time
 
+    # Running a timer effectively
     do {
         # Trigger cmd function
         $currentTime = Get-Date
@@ -94,7 +101,7 @@ $job = Start-Job -Name ($username+'Temp Admin '+$time+' mins') -ScriptBlock {
 
         }
         else {
-            Write-Output "$($time * 0.3)_Nothing to trigger for $($targetSystem.hostname)..."
+            Write-Output "Nothing to trigger for $($targetSystem.hostname)..."
         }
 
 
@@ -110,28 +117,6 @@ $job = Start-Job -Name ($username+'Temp Admin '+$time+' mins') -ScriptBlock {
 
 } -ArgumentList $env:JCRW,$time,$startTime,$endTime,$jcuser,$targetSystem,$triggerName,$cmd
 
-# Wait for the job to finish and get the remaining time
+# Getting the status of the job
 receive-Job -id $job.id -keep
 
-
-# To clean:
-# Clean up the job
-#Remove-Job $job
-
-#Write-Host "Remaining minutes: $remainingMinutes"
-
-# setup a cmd trigger for Win/Mac, set timeout according to the ^ timer, send notification within the cmd, 
-# and demote the user once timeout. 
-## pop a msg in Win 5 mins before the timer runs out
-### create a JC cmd and bind to the device ^
-
-
-# New IDEA - 
-## Create a cmd trigger pass in the API key - 
-## Run schedule within the cmd and track the output of remaining mins - 
-## Send toast msgs to the logged on user - 
-## Revoke the permission once time is up - 
-## Progress is trackable in cmd results.    
-
-
-#Invoke-JCCommand -trigger ToastTest -NumberOfVariables 1 -Variable1_name "Testkey" -Variable1_value $env:JC

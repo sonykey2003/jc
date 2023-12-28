@@ -18,7 +18,7 @@ $modules = get-module -ListAvailable burnttoast,runasuser
 
 # Popping the msg
 $scriptBlock = {
-  $remainingTime = get-content  C:\Users\Public\rt.txt; New-BurntToastNotification -Text "Your admin privilege will be revoked in $remainingTime mins"
+  $remainingTime = get-content  C:\Users\Public\rt.txt; New-BurntToastNotification -Text "Your admin privilege has been granted, it will be revoked in $remainingTime mins"
 }
 invoke-ascurrentuser -scriptblock $scriptBlock
 
@@ -51,7 +51,7 @@ runAsUser() {
   fi
 }
 
-osascript -e "display dialog \"Your admin privilege will be revoked in $remainingTime mins\" buttons {\"OK\"}"
+osascript -e "display dialog \"Your admin privilege has been granted, it will be revoked in $remainingTime mins\" buttons {\"OK\"}"
 
 
 '@
