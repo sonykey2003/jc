@@ -1,6 +1,6 @@
 # Connect to your JC Tenant - Manager role is good enough!
-Connect-JCOnline "your-Manager-admin-api-key"
-
+Connect-JCOnline -JumpCloudApiKey $env:JCRW #strongly suggest storing the API key in the system env variable,
+## i.e. https://medium.com/@sonykey2003/protect-your-secrets-in-environment-variables-a07eff7699f0
 
 # Create the toast msg cmd trigger for Windows
 $winTriggerName = "WinToast"
