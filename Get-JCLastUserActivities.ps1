@@ -6,13 +6,13 @@ $outputReport = @()
 $tracebackDays = 30
 
 # Get all users with usernames only
-$usernames = Get-JCUser -returnProperties username,systemUsername
+$usernames = Get-JCUser
 foreach ($u in $usernames){ 
     $report = "" | select username,geoip,service,success,client_ip,timestamp,details,event_type,useragent,localUserName
     
     $reportUser = $u.username
     if ("" -ne $u.systemUsername){
-      $reportUser = $u.systemUsername
+      $reportUser = ($u.systemUsername).ToLower()
 
     }
     # Callin JC DI and back tracking the days defined above
