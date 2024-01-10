@@ -6,7 +6,7 @@ $outputReport = @()
 $tracebackDays = 30
 
 # Get all users with usernames only
-$usernames = Get-JCUser
+$usernames = Get-JCUser -returnProperties username,systemUsername
 foreach ($u in $usernames){ 
     $report = "" | select username,geoip,service,success,client_ip,timestamp,details,event_type,useragent,localUserName
     
@@ -16,7 +16,7 @@ foreach ($u in $usernames){
 
     }
     # Callin JC DI and back tracking the days defined above
-    $loginEvent = Get-JCEvent -Service:('all') -StartTime:((Get-date).AddDays(-$tracebackDays))`
+    $loginEvent = Get-JcSdkEvent -Service:('all') -StartTime:((Get-date).AddDays(-$tracebackDays))`
       -SearchTermAnd @{"initiated_by.username" = $reportUser} -ErrorAction SilentlyContinue |`
       sort-object -Descending $_.timestamp -Bottom 1
 
