@@ -56,15 +56,21 @@ function Get-MachineSN{
 }
 
 # Create a new device group to gather these systems together
-$ng = New-JCSystemGroup -GroupName "NewHostName"
+$newGrounName = "NewHostName"
+$ng = Get-JCGroup -Type System -name $newGrounName -ErrorAction SilentlyContinue
+if ($null -eq $ng){
+    $ng = New-JCSystemGroup -GroupName "NewHostName"
+}
 
-# Change the displayname
+# Executing the change
 foreach ($s in $jcSystems){
     $displayName =  (Get-MachineType -systemID $s) +'-' + (Get-MachineSN -systemID $s)
     
+    # Changing the displayname on JC
     Write-Host "new name for $s will change to: $displayname"
+    Set-JCSystem -displayName $displayName
 
-    #Set-JCSystem -displayName $displayName
+    # Add to the system group
     write-host "adding $displayname to group $($ng.name)"
     Add-JCSystemGroupMember -GroupID $ng.id -SystemID $s
 
