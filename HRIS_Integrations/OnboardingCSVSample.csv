@@ -1,3 +1,4 @@
-Employee Id,First Name,Last Name,Company,Location,Department,Employment Type,Job Title,Cost Center,Start Date
-2351,John,Doe,MadeUpCorp,USA,Sales,Permanent Employee,Sales Manager,Sales,05/05/2023
-12461,Jane,Roe,MadeUpCorp,SGP,Engineering,Contractor,Sr. SRE,Engineering,06/07/2023
+Employee Id,First Name,Last Name,Cost Center,company,location,department,employeeType,jobTitle,Start Date
+2351,John,Doe,111,MadeUpCorp,USA,Sales,FTE,Sales Manager,05/05/2023
+12461,Jane,Roe,222,MadeUpCorp,SGP,Engineering,Contractor,Sr. SRE,06/07/2023
+324234,New,Guy,333,MadeUpCorp,TW,DevOps,FTE,DevOps Engineer,18/01/2024
