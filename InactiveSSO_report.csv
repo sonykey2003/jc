@@ -1,0 +1,52 @@
+"AppDN","AppLabel","SSOUrl","Unused","last_5_activities"
+"15Five","Test","https://sso.jumpcloud.com/saml2/15five","True","N/A"
+"Atlassian Cloud","jira","https://sso.jumpcloud.com/saml2/atlassiancloud","True","N/A"
+"Amazon Web Services (IAM)","Amazon Web Services IAM","https://sso.jumpcloud.com/saml2/amazonwebservicesiam","True","N/A"
+"Amazon Web Services (IAM)","AWS IAM","https://sso.jumpcloud.com/saml2/aws","True","N/A"
+"AWS IAM Identity Center","AWS - IAM Identity center","https://sso.jumpcloud.com/saml2/aws-sso","False","@{error_message=policy denied access; initiated_by=; geoip=; sso_token_success=False; auth_context=; useragent=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; id=65e12d42d84fafab1997a2de; idp_initiated=True; timestamp=2024-03-01T01:20:02.166432429Z}
+@{error_message=; initiated_by=; geoip=; sso_token_success=True; auth_context=; useragent=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; id=65e12d6bec777931501925cf; idp_initiated=True; timestamp=2024-03-01T01:20:43.171092546Z}
+@{error_message=policy denied access; initiated_by=; geoip=; sso_token_success=False; useragent=; auth_context=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; idp_initiated=True; id=65efe1c58185187147f88038; timestamp=2024-03-12T05:01:57.728027153Z}
+@{initiated_by=; error_message=policy denied access; geoip=; sso_token_success=False; auth_context=; useragent=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; idp_initiated=True; id=65efe7a56ae9e2da6bd0e825; timestamp=2024-03-12T05:27:01.413558644Z}
+@{error_message=; initiated_by=; geoip=; sso_token_success=True; useragent=; auth_context=; mfa=True; event_type=sso_auth; mfa_meta=; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; idp_initiated=True; id=65efe7e38185187147f88218; timestamp=2024-03-12T05:28:03.689971295Z}
+@{initiated_by=; error_message=policy denied access; geoip=; sso_token_success=False; auth_context=; useragent=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; id=65efeacfbc510f924f4b5c70; idp_initiated=True; timestamp=2024-03-12T05:40:31.578156941Z}
+@{error_message=; initiated_by=; geoip=; sso_token_success=True; useragent=; auth_context=; mfa=True; event_type=sso_auth; mfa_meta=; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; id=65efebecfa3dddcd1f61e895; idp_initiated=True; timestamp=2024-03-12T05:45:16.916073875Z}
+@{initiated_by=; error_message=policy denied access; geoip=; sso_token_success=False; useragent=; auth_context=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; idp_initiated=True; id=65fa53560807219c032b139f; timestamp=2024-03-20T03:09:10.802762252Z}
+@{error_message=policy denied access; initiated_by=; geoip=; sso_token_success=False; auth_context=; useragent=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; id=65fa56592bfb340d0db5d551; idp_initiated=True; timestamp=2024-03-20T03:22:01.504865123Z}
+@{initiated_by=; error_message=; geoip=; sso_token_success=True; useragent=; auth_context=; mfa=True; event_type=sso_auth; mfa_meta=; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; idp_initiated=True; id=65fa569199a050dec6a9ef37; timestamp=2024-03-20T03:22:57.959387298Z}
+@{error_message=no factors enrolled; initiated_by=; geoip=; sso_token_success=False; useragent=; auth_context=; mfa=False; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; idp_initiated=True; id=65fb7efc3a7b9fefe5f29ac8; timestamp=2024-03-21T00:27:40.529836785Z}
+@{error_message=; initiated_by=; geoip=; sso_token_success=True; auth_context=; useragent=; mfa=True; mfa_meta=; event_type=sso_auth; application=; provider=; service=sso; organization=615d55c193cd2850187c6ff5; @version=1; client_ip=223.25.78.16; id=65fb84f493747c61b74d1859; idp_initiated=True; timestamp=2024-03-21T00:53:08.714446281Z}"
+"Bookmark","zoho","https://console.jumpcloud.com/api/v2/provision/zoho/callback","True","N/A"
+"Bookmark","NinjaOne","https://oc.ninjarmm.com/","True","N/A"
+"Bookmark","Office Downloading link","https://office.com","True","N/A"
+"Bookmark","demo-application-bookmark","https://www.google.com","True","N/A"
+"DropBox","DropBox","https://sso.jumpcloud.com/saml2/dropbox","True","N/A"
+"Fortinet","Fortinet","https://sso.jumpcloud.com/saml2/fortinet","True","N/A"
+"Google Workspace","GWS_csjumpcloud","https://sso.jumpcloud.com/saml2/google","True","N/A"
+"Google Cloud Platform","Google Cloud Platform","https://sso.jumpcloud.com/saml2/googlecloudplatform","True","N/A"
+"Hubspot","hubspot scim","https://sso.jumpcloud.com/saml2/hubspot","True","N/A"
+"JAMF Cloud","JAMF Cloud","https://sso.jumpcloud.com/saml2/jamfcloud","True","N/A"
+"JumpCloud Password Manager","JC Password Manager","https://cdn.pwm.jumpcloud.com/web/download.html","True","N/A"
+"NICE inContact CXone","cxone_sandbox","https://sso.jumpcloud.com/saml2/niceincontactcxone","True","N/A"
+"NinjaRMM","NinjaRMM","https://sso.jumpcloud.com/saml2/ninjarmm","True","N/A"
+"Microsoft 365","o365test","https://sso.jumpcloud.com/saml2/office365","True","N/A"
+"Microsoft 365","M365-Dev","https://sso.jumpcloud.com/saml2/office365_dev","True","N/A"
+"OpenID Connect","Qudos3 Dev",,"True","N/A"
+"OpenID Connect","OpenID PG",,"True","N/A"
+"OpenID Connect","budibase",,"True","N/A"
+"OpenID Connect","AutoTask-Dev",,"True","N/A"
+"Okta","Okta","https://sso.jumpcloud.com/saml2/okta","True","N/A"
+"Personio","Personio Sandbox","https://dev-partner-jumpcloud-1.personio.de/","True","N/A"
+"PrinterLogic SaaS","printerlogic","https://sso.jumpcloud.com/saml2/printerlogicsaas","True","N/A"
+"Salesforce","sfdc_sandbox","https://sso.jumpcloud.com/saml2/salesforce","True","N/A"
+"SAML 2.0","atlassian-alternatvie","https://sso.jumpcloud.com/saml2/atlassiancloud01","True","N/A"
+"SAML 2.0","bambooHR","https://sso.jumpcloud.com/saml2/bambooHR","True","N/A"
+"SAML2.0","Bitrix24","https://sso.jumpcloud.com/saml2/bitrix24","True","N/A"
+"SAML 2.0","ConnX","https://sso.jumpcloud.com/saml2/connx","True","N/A"
+"SAML 2.0","[Demo]Custom API","https://sso.jumpcloud.com/saml2/customHRAPI","True","N/A"
+"SAML2.0","elmo","https://sso.jumpcloud.com/saml2/elmo","True","N/A"
+"SAML2.0","huntress","https://sso.jumpcloud.com/saml2/huntress","True","N/A"
+"SAML 2.0","Profit.co","https://sso.jumpcloud.com/saml2/profitco","True","N/A"
+"SAML2.0","RSA Test","https://sso.jumpcloud.com/saml2/rsatest","True","N/A"
+"SAML 2.0","aZoho","https://sso.jumpcloud.com/saml2/saml2","True","N/A"
+"SAML2.0","UOW","https://sso.jumpcloud.com/saml2/uow","True","N/A"
+"ThousandEyes","te","https://sso.jumpcloud.com/saml2/thousandeyes","True","N/A"

@@ -4,7 +4,7 @@
 # Version: 1.0.1
 # Author: Shawn Song
 # Reference: 
-#  -  https://community.jumpcloud.com/t5/community-scripts/powershell-add-the-systems-to-a-system-group-depends-on-where/m-p/1733#M172
+#  -  https://community.jumpcloud.com/t5/community-scripts/is-your-sso-feeling-lonely-identifying-unused-sso-applications/m-p/4239#M400
 # 
 # Notes: Identifying Unused SSO Applications in JumpCloud for the past x days. 
 # Requirements:
