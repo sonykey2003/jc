@@ -17,11 +17,13 @@ $MissingApp = Read-Host "Input the name of the app" # Given a name of the app yo
 $DesiredApp = '*'+$MissingApp+'*'
 $systemsMissingApp = @()
 $date = (Get-Date).ToString('MMddyyyy')
-# Ruling the mobile devices
+
+# Ruling out the mobile devices
 $filters = @'
     filter[0]=os:$ne:iOS&filter[1]=os:$ne:Android&filter[2]=os:$ne:iPadOS&filter[3]=os:$ne:iOS
 '@
 $allsystems = Get-JcSdkSystem -Filter $filters 
+
 foreach ($system in $allsystems){
     $notMissing = 0
 
