@@ -19,9 +19,7 @@ $systemsMissingApp = @()
 $date = (Get-Date).ToString('MMddyyyy')
 
 # Ruling out the mobile devices
-$filters = @'
-    filter[0]=os:$ne:iOS&filter[1]=os:$ne:Android&filter[2]=os:$ne:iPadOS&filter[3]=os:$ne:iOS
-'@
+$filters = @('os:$ne:iOS','os:$ne:Android','os:$ne:iPadOS')
 $allsystems = Get-JcSdkSystem -Filter $filters 
 
 foreach ($system in $allsystems){
