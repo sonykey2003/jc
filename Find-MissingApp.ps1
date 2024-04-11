@@ -4,7 +4,7 @@
 # Version: 2.0.1
 # Author: Shawn Song
 # Reference: 
-#  -  https://community.jumpcloud.com/t5/community-scripts/is-your-sso-feeling-lonely-identifying-unused-sso-applications/m-p/4239#M400
+#  -  https://community.jumpcloud.com/t5/community-scripts/let-s-find-the-missing-apps/td-p/4393
 # 
 # Notes: Identifying if the device is missing the desired app, scan though all your systems except the mobile devices, output a CSV of these systems. 
 # Requirements:
