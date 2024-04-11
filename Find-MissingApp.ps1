@@ -39,4 +39,9 @@ foreach ($system in $allsystems){
     }
 }
 
-$systemsMissingApp | select hostname,displayName,os,version,ID | Export-Csv @("Missing$DesiredApp_$date.csv")
+$reportName = "Missing_" +  $MissingApp + "_" + $date + ".csv"
+
+Write-Host "Here is the glance of the report:"
+$systemsMissingApp | select hostname,displayName,os,version,ID  -first 10 | ft
+Write-Host "The full report has been exported to $reportname"
+$systemsMissingApp | select hostname,displayName,os,version,ID | Export-Csv $reportName
